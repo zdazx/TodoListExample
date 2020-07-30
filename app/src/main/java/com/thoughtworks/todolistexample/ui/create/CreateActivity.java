@@ -53,7 +53,7 @@ public class CreateActivity extends AppCompatActivity {
 
         createViewModel = obtainViewModel();
         final Observer<Boolean> observer = aBoolean -> {
-            Toast.makeText(getApplicationContext(), aBoolean ? CREATE_SUCCESS.name() : CREATE_FAILED.name(), Toast.LENGTH_SHORT)
+            Toast.makeText(getApplicationContext(), aBoolean ? CREATE_SUCCESS.getName() : CREATE_FAILED.getName(), Toast.LENGTH_SHORT)
                     .show();
             openHomeActivity();
         };

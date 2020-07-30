@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void openHomeActivity() {
-        Log.d(LOG_TAG.name(), "login success");
+        Log.d(LOG_TAG.getName(), "login success");
         Toast.makeText(getApplicationContext(), "Welcome!", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);

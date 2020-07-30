@@ -76,11 +76,11 @@ public class LoginViewModel extends ViewModel {
                     @Override
                     public void onComplete() {
                         if (Objects.nonNull(localUser) && Objects.nonNull(dbUser)) {
-                            Log.d(LOG_TAG.name(), "success find user from db");
+                            Log.d(LOG_TAG.getName(), "success find user from db");
                             return;
                         }
-                        Log.d(LOG_TAG.name(), "failed find user from db");
-                        Log.d(LOG_TAG.name(), "start get remote user");
+                        Log.d(LOG_TAG.getName(), "failed find user from db");
+                        Log.d(LOG_TAG.getName(), "start get remote user");
                         getRemoteUser(username, password);
                     }
                 });
@@ -108,10 +108,10 @@ public class LoginViewModel extends ViewModel {
                     @Override
                     public void onComplete() {
                         if (Objects.isNull(localUser)) {
-                            Log.d(LOG_TAG.name(), "get remote user failed");
+                            Log.d(LOG_TAG.getName(), "get remote user failed");
                             return;
                         }
-                        Log.d(LOG_TAG.name(), "start insert user to db");
+                        Log.d(LOG_TAG.getName(), "start insert user to db");
                         saveRemoteUserToLocal();
                     }
                 });
@@ -146,7 +146,7 @@ public class LoginViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        Log.d(LOG_TAG.name(), "end insert user to db");
+                        Log.d(LOG_TAG.getName(), "end insert user to db");
                     }
 
                     @Override
