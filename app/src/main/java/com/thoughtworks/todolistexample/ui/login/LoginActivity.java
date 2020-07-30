@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         final Observer<Boolean> observer = aBoolean -> {
             if (!aBoolean) {
                 Toast.makeText(getApplicationContext(), "用户不存在", Toast.LENGTH_LONG).show();
+                return;
             }
             openHomepageActivity();
         };
