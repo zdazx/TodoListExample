@@ -24,4 +24,14 @@ public class DateUtil {
         }
         return new SimpleDateFormat("MM月dd日", Locale.CHINA).format(Long.parseLong(timestamp));
     }
+
+    public static String toCurrentDay() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE,  dd", Locale.ENGLISH);
+        return dateFormat.format(new Date()).concat("th");
+    }
+
+    public static String toCurrentMonth() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
+        return dateFormat.format(new Date());
+    }
 }
