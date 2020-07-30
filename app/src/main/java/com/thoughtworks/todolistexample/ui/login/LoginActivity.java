@@ -1,14 +1,16 @@
 package com.thoughtworks.todolistexample.ui.login;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.thoughtworks.todolistexample.MainApplication;
 import com.thoughtworks.todolistexample.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -32,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
                 new LoginWatcher(usernameView, passwordView, loginBtn, getApplicationContext()));
         loginBtn.setOnClickListener(view -> login());
 
-        loginViewModel = new LoginViewModel();
+        loginViewModel = obtainViewModel();
         final Observer<Boolean> observer = aBoolean -> {
             if (!aBoolean) {
                 Toast.makeText(getApplicationContext(), "用户不存在", Toast.LENGTH_LONG).show();
@@ -41,6 +43,13 @@ public class LoginActivity extends AppCompatActivity {
         };
         loginViewModel.getLoginResult().observe(this, observer);
 
+    }
+
+    private LoginViewModel obtainViewModel() {
+        UserRepository userRepository = ((MainApplication) getApplicationContext()).getUserRepository();
+        LoginViewModel loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        loginViewModel.setUserRepository(userRepository);
+        return loginViewModel;
     }
 
     private void openHomepageActivity() {

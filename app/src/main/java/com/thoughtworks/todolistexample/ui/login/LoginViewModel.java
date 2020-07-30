@@ -27,6 +27,11 @@ import static com.thoughtworks.todolistexample.repository.utils.Encryptor.md5;
 public class LoginViewModel extends ViewModel {
     private MutableLiveData<Boolean> loginResult;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private UserRepository userRepository;
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public LiveData<Boolean> getLoginResult() {
         if (Objects.isNull(loginResult)) {
