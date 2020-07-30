@@ -25,6 +25,8 @@ import java.util.Calendar;
 
 import static com.thoughtworks.todolistexample.constant.Constants.CREATE_FAILED;
 import static com.thoughtworks.todolistexample.constant.Constants.CREATE_SUCCESS;
+import static com.thoughtworks.todolistexample.constant.Constants.MUST_EDIT_DATE;
+import static com.thoughtworks.todolistexample.constant.Constants.MUST_EDIT_TITLE;
 import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toStringTimestamp;
 
 public class CreateActivity extends AppCompatActivity {
@@ -72,7 +74,22 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private void saveTask() {
+        if (cannotCreateTask()) {
+            return;
+        }
         createViewModel.save(buildTask());
+    }
+
+    private boolean cannotCreateTask() {
+        if (titleET.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), MUST_EDIT_TITLE.getName(), Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if (dateView.getText().toString().equals(getResources().getString(R.string.date))) {
+            Toast.makeText(getApplicationContext(), MUST_EDIT_DATE.getName(), Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
     }
 
     private Task buildTask() {
