@@ -12,12 +12,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.thoughtworks.todolistexample.MainApplication;
 import com.thoughtworks.todolistexample.R;
+import static com.thoughtworks.todolistexample.constant.Constants.LOG_TAG;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText usernameView;
     private EditText passwordView;
     private LoginViewModel loginViewModel;
-    public static final String tag = "TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void openHomepageActivity() {
-        Log.d(tag, "login success");
+        Log.d(LOG_TAG.name(), "login success");
     }
 
     private void login() {
