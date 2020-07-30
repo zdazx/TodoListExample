@@ -5,13 +5,13 @@ import androidx.room.Insert;
 
 import com.thoughtworks.todolistexample.repository.task.entity.Task;
 
-import io.reactivex.Completable;
+import io.reactivex.Maybe;
 
 import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface DBTaskDataSource extends TaskDataSource {
     @Insert(onConflict = REPLACE)
-    Completable save(Task task);
+    Maybe<Long> save(Task task);
 
 }

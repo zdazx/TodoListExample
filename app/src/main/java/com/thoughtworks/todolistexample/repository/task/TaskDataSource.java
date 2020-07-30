@@ -2,9 +2,9 @@ package com.thoughtworks.todolistexample.repository.task;
 
 import com.thoughtworks.todolistexample.repository.task.entity.Task;
 
-import io.reactivex.Completable;
+import io.reactivex.Maybe;
 
 public interface TaskDataSource {
-    Completable save(Task task);
+    Maybe<Long> save(Task task);
 
 }
