@@ -61,6 +61,10 @@ public class LoginViewModel extends ViewModel {
                     public void onSuccess(User user) {
                         dbUser = user;
                         localUser = user;
+                        if (!user.getPassword().equals(md5(password))) {
+                            loginResult.postValue(false);
+                            return;
+                        }
                         loginResult.postValue(true);
                     }
 
