@@ -11,16 +11,16 @@ import android.widget.Toast;
 
 import com.thoughtworks.todolistexample.R;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     private EditText usernameView;
     private EditText passwordView;
     private LoginViewModel loginViewModel;
-    public static final String  tag = "TAG";
+    public static final String tag = "TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         usernameView = findViewById(R.id.username);
         passwordView = findViewById(R.id.password);
