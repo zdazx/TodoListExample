@@ -2,6 +2,7 @@ package com.thoughtworks.todolistexample.repository.task.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
@@ -30,6 +31,30 @@ public class Task {
         this.description = description;
         this.deadline = deadline;
         this.done = done;
+        this.remind = remind;
+    }
+
+    @Ignore
+    public Task() {
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
+    public void setRemind(boolean remind) {
         this.remind = remind;
     }
 
