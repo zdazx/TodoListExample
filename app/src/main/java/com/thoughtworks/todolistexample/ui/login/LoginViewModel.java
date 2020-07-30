@@ -108,7 +108,7 @@ public class LoginViewModel extends ViewModel {
                             return;
                         }
                         Log.d(LOG_TAG.name(), "start insert user to db");
-//                        saveRemoteUserToLocal();
+                        saveRemoteUserToLocal();
                     }
                 });
 
