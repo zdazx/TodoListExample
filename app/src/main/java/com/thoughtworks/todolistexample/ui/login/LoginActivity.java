@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void openHomepageActivity() {
         Log.d(LOG_TAG.name(), "login success");
+        Toast.makeText(getApplicationContext(), "Welcome!", Toast.LENGTH_LONG).show();
     }
 
     private void login() {
