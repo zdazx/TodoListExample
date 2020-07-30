@@ -1,5 +1,6 @@
 package com.thoughtworks.todolistexample.ui.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -12,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.thoughtworks.todolistexample.MainApplication;
 import com.thoughtworks.todolistexample.R;
+import com.thoughtworks.todolistexample.ui.home.HomeActivity;
+
 import static com.thoughtworks.todolistexample.constant.Constants.LOG_TAG;
 
 public class LoginActivity extends AppCompatActivity {
@@ -40,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "用户不存在", Toast.LENGTH_LONG).show();
                 return;
             }
-            openHomepageActivity();
+            openHomeActivity();
         };
         loginViewModel.getLoginResult().observe(this, observer);
 
@@ -53,9 +56,11 @@ public class LoginActivity extends AppCompatActivity {
         return loginViewModel;
     }
 
-    private void openHomepageActivity() {
+    private void openHomeActivity() {
         Log.d(LOG_TAG.name(), "login success");
         Toast.makeText(getApplicationContext(), "Welcome!", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 
     private void login() {
