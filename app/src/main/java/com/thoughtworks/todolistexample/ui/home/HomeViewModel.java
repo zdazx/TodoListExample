@@ -8,8 +8,10 @@ import com.thoughtworks.todolistexample.repository.task.entity.Task;
 import com.thoughtworks.todolistexample.ui.create.TaskRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import io.reactivex.MaybeObserver;
 import io.reactivex.disposables.CompositeDisposable;
@@ -44,7 +46,7 @@ public class HomeViewModel extends ViewModel {
 
                     @Override
                     public void onSuccess(List<Task> tasks) {
-                        taskResult.postValue((ArrayList<Task>) tasks);
+                        taskResult.postValue(sortByDeadline(tasks));
                     }
 
                     @Override
@@ -57,6 +59,12 @@ public class HomeViewModel extends ViewModel {
 
                     }
                 });
+    }
+
+    private ArrayList<Task> sortByDeadline(List<Task> tasks) {
+        return (ArrayList<Task>) tasks.stream()
+                .sorted(Comparator.comparing(task -> Integer.parseInt(task.getDeadline().substring(0, 7))))
+                .collect(Collectors.toList());
     }
 
     @Override
