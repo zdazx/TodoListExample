@@ -15,12 +15,11 @@ import com.thoughtworks.todolistexample.MainApplication;
 import com.thoughtworks.todolistexample.R;
 import com.thoughtworks.todolistexample.ui.home.HomeActivity;
 
-import static com.thoughtworks.todolistexample.constant.Constants.LOG_TAG;
-
 public class LoginActivity extends AppCompatActivity {
     private EditText usernameView;
     private EditText passwordView;
     private LoginViewModel loginViewModel;
+    private final String LOGIN_ACTIVITY = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void openHomeActivity() {
-        Log.d(LOG_TAG.getName(), "login success");
+        Log.d(LOGIN_ACTIVITY, "login success");
         Toast.makeText(getApplicationContext(), "Welcome!", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);

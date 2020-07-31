@@ -26,7 +26,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-import static com.thoughtworks.todolistexample.constant.Constants.LOG_TAG;
 import static com.thoughtworks.todolistexample.repository.utils.Encryptor.md5;
 
 public class LoginViewModel extends ViewModel {
@@ -34,6 +33,7 @@ public class LoginViewModel extends ViewModel {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private UserRepository userRepository;
     private User localUser;
+    private final String LOGIN_VIEW_MODEL = "LoginViewModel";
 
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -76,11 +76,11 @@ public class LoginViewModel extends ViewModel {
                     @Override
                     public void onComplete() {
                         if (Objects.nonNull(localUser) && Objects.nonNull(dbUser)) {
-                            Log.d(LOG_TAG.getName(), "success find user from db");
+                            Log.d(LOGIN_VIEW_MODEL, "success find user from db");
                             return;
                         }
-                        Log.d(LOG_TAG.getName(), "failed find user from db");
-                        Log.d(LOG_TAG.getName(), "start get remote user");
+                        Log.d(LOGIN_VIEW_MODEL, "failed find user from db");
+                        Log.d(LOGIN_VIEW_MODEL, "start get remote user");
                         getRemoteUser(username, password);
                     }
                 });
@@ -108,10 +108,10 @@ public class LoginViewModel extends ViewModel {
                     @Override
                     public void onComplete() {
                         if (Objects.isNull(localUser)) {
-                            Log.d(LOG_TAG.getName(), "get remote user failed");
+                            Log.d(LOGIN_VIEW_MODEL, "get remote user failed");
                             return;
                         }
-                        Log.d(LOG_TAG.getName(), "start insert user to db");
+                        Log.d(LOGIN_VIEW_MODEL, "start insert user to db");
                         saveRemoteUserToLocal();
                     }
                 });
@@ -146,7 +146,7 @@ public class LoginViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        Log.d(LOG_TAG.getName(), "end insert user to db");
+                        Log.d(LOGIN_VIEW_MODEL, "end insert user to db");
                     }
 
                     @Override
