@@ -66,6 +66,7 @@ public class CreateActivity extends AppCompatActivity {
         deleteImgView = findViewById(R.id.delete);
         ImageView confirmImgView = findViewById(R.id.confirm);
         confirmImgView.setOnClickListener(view -> saveTask());
+        deleteImgView.setOnClickListener(view -> delete());
 
         if (Objects.nonNull(existTask)) {
             init(existTask);
@@ -86,6 +87,20 @@ public class CreateActivity extends AppCompatActivity {
         };
         createViewModel.getUpdateResult().observe(this, updateObserver);
 
+        final Observer<Boolean> deleteObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                Toast.makeText(getApplicationContext(), aBoolean ? getString(R.string.delete_success) : getString(R.string.delete_fail), Toast.LENGTH_SHORT)
+                        .show();
+                openHomeActivity();
+            }
+        };
+        createViewModel.getDeleteResult().observe(this, deleteObserver);
+
+    }
+
+    private void delete() {
+        createViewModel.delete(existTask);
     }
 
     private void init(Task task) {
