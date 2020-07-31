@@ -1,5 +1,6 @@
 package com.thoughtworks.todolistexample.ui.home;
 
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,9 @@ public class HomeAdapter extends RecyclerView.Adapter {
         ((HomeViewHolder)holder).getSelectDoneCheckBox().setChecked(task.isDone());
         ((HomeViewHolder)holder).getTitleView().setText(task.getTitle());
         ((HomeViewHolder)holder).getDeadlineView().setText(toDate(task.getDeadline()));
+        if (task.isDone()) {
+            ((HomeViewHolder)holder).getTitleView().getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        }
     }
 
     @Override
