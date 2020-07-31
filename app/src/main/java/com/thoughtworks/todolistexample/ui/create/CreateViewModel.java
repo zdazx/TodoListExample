@@ -16,6 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 public class CreateViewModel extends ViewModel {
     private MutableLiveData<Boolean> createResult;
     private MutableLiveData<Boolean> updateResult;
+    private MutableLiveData<Boolean> deleteResult;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private TaskRepository taskRepository;
 
@@ -31,6 +32,13 @@ public class CreateViewModel extends ViewModel {
             updateResult = new MutableLiveData<>();
         }
         return updateResult;
+    }
+
+    public LiveData<Boolean> getDeleteResult() {
+        if (Objects.isNull(deleteResult)) {
+            deleteResult = new MutableLiveData<>();
+        }
+        return deleteResult;
     }
 
     public void setTaskRepository(TaskRepository taskRepository) {
@@ -86,6 +94,33 @@ public class CreateViewModel extends ViewModel {
                     @Override
                     public void onError(Throwable e) {
                         updateResult.postValue(false);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void delete(Task task) {
+        taskRepository.delete(task)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new MaybeObserver<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        compositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(Integer integer) {
+                        deleteResult.postValue(true);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        deleteResult.postValue(false);
                     }
 
                     @Override
