@@ -18,14 +18,14 @@ public class DateUtil {
         return String.valueOf(date.getTime());
     }
 
-    public static String toDate(String timestamp) {
+    public static String toDateOfMonthAndDay(String timestamp) {
         if (Objects.isNull(timestamp) || timestamp.equals("")) {
             return "";
         }
         return new SimpleDateFormat("MM月dd日", Locale.CHINA).format(Long.parseLong(timestamp));
     }
 
-    public static String toCurrentDay() {
+    public static String toCurrentDayAndWeek() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE,  dd", Locale.ENGLISH);
         return dateFormat.format(new Date()).concat("th");
     }
@@ -33,5 +33,12 @@ public class DateUtil {
     public static String toCurrentMonth() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
         return dateFormat.format(new Date());
+    }
+
+    public static String toDate(String timestamp) {
+        if (Objects.isNull(timestamp) || timestamp.equals("")) {
+            return "";
+        }
+        return new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA).format(Long.parseLong(timestamp));
     }
 }
