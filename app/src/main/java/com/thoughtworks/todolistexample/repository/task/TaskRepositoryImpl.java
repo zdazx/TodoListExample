@@ -28,4 +28,9 @@ public class TaskRepositoryImpl implements TaskRepository {
     public Maybe<Integer> update(Task task) {
         return taskDataSource.update(task);
     }
+
+    @Override
+    public Maybe<Integer> delete(Task task) {
+        return taskDataSource.delete(task);
+    }
 }

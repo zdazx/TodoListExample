@@ -1,6 +1,7 @@
 package com.thoughtworks.todolistexample.repository.task;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -23,5 +24,8 @@ public interface DBTaskDataSource extends TaskDataSource {
 
     @Update
     Maybe<Integer> update(Task task);
+
+    @Delete
+    Maybe<Integer> delete(Task task);
 
 }

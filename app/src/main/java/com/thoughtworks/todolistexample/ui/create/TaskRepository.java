@@ -13,4 +13,6 @@ public interface TaskRepository {
 
     Maybe<Integer> update(Task task);
 
+    Maybe<Integer> delete(Task task);
+
 }

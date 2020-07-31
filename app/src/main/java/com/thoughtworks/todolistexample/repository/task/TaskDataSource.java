@@ -13,4 +13,6 @@ public interface TaskDataSource {
 
     Maybe<Integer> update(Task task);
 
+    Maybe<Integer> delete(Task task);
+
 }
