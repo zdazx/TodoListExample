@@ -27,6 +27,7 @@ public class HomeViewModel extends ViewModel {
     private final int endIdxOfDate = 7;
     private MutableLiveData<ArrayList<Task>> taskResult;
     private MutableLiveData<Task> updateNotification;
+    private MutableLiveData<Task> detailNotification;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private TaskRepository taskRepository;
     public static final String HOME_VIEW_MODEL = "HomeViewModel";
@@ -43,6 +44,17 @@ public class HomeViewModel extends ViewModel {
             updateNotification = new MutableLiveData<>();
         }
         return updateNotification;
+    }
+
+    public LiveData<Task> getDetailNotification() {
+        if (Objects.isNull(detailNotification)) {
+            detailNotification = new MutableLiveData<>();
+        }
+        return detailNotification;
+    }
+
+    public void receiveDetailTask(Task task) {
+        detailNotification.postValue(task);
     }
 
     public void receiveUpdateTask(Task task) {

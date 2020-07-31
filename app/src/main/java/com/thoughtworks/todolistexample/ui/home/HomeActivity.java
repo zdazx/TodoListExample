@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.thoughtworks.todolistexample.MainApplication;
 import com.thoughtworks.todolistexample.R;
 import com.thoughtworks.todolistexample.repository.task.entity.Task;
@@ -19,8 +20,10 @@ import com.thoughtworks.todolistexample.ui.create.CreateActivity;
 import com.thoughtworks.todolistexample.ui.create.TaskRepository;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toCurrentDay;
+import static com.thoughtworks.todolistexample.constant.Constants.IS_HAVE_TASK;
+import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toCurrentDayAndWeek;
 import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toCurrentMonth;
 
 public class HomeActivity extends AppCompatActivity {
@@ -39,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         setCurrentDate();
 
         ImageView goCreateBtn = findViewById(R.id.go_create);
-        goCreateBtn.setOnClickListener(view -> openCreateActivity());
+        goCreateBtn.setOnClickListener(view -> openCreateActivity(null));
 
         homeViewModel = obtainViewModel();
         RecyclerView taskContainer = findViewById(R.id.task_container);
@@ -59,6 +62,9 @@ public class HomeActivity extends AppCompatActivity {
         final Observer<Task> updateNotificationObserver = this::updateTask;
         homeViewModel.getUpdateNotification().observe(this, updateNotificationObserver);
 
+        final Observer<Task> detailNotificationObserver = this::openCreateActivity;
+        homeViewModel.getDetailNotification().observe(this, detailNotificationObserver);
+
         getAllTasks();
     }
 
@@ -67,12 +73,16 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setCurrentDate() {
-        todayTV.setText(toCurrentDay());
+        todayTV.setText(toCurrentDayAndWeek());
         monthTV.setText(toCurrentMonth());
     }
 
-    private void openCreateActivity() {
+    private void openCreateActivity(Task task) {
         Intent intent = new Intent(this, CreateActivity.class);
+        if (Objects.nonNull(task)) {
+            String taskJson = new Gson().toJson(task);
+            intent.putExtra(IS_HAVE_TASK.getName(), taskJson);
+        }
         startActivity(intent);
     }
 

@@ -15,7 +15,7 @@ import com.thoughtworks.todolistexample.repository.task.entity.Task;
 
 import java.util.ArrayList;
 
-import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toDate;
+import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toDateOfMonthAndDay;
 
 public class HomeAdapter extends RecyclerView.Adapter {
     private ArrayList<Task> tasks;
@@ -58,7 +58,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
         Task task = tasks.get(position);
         ((HomeViewHolder) holder).selectDoneCheckBox.setChecked(task.isDone());
         ((HomeViewHolder) holder).titleView.setText(task.getTitle());
-        ((HomeViewHolder) holder).deadlineView.setText(toDate(task.getDeadline()));
+        ((HomeViewHolder) holder).deadlineView.setText(toDateOfMonthAndDay(task.getDeadline()));
         paintStrikeLine(((HomeViewHolder) holder).titleView, task.isDone());
 
         ((HomeViewHolder) holder).selectDoneCheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -66,6 +66,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
             homeViewModel.receiveUpdateTask(task);
             paintStrikeLine(((HomeViewHolder) holder).titleView, b);
         });
+
+        holder.itemView.setOnClickListener(view -> homeViewModel.receiveDetailTask(task));
     }
 
     private void paintStrikeLine(TextView textView, boolean isDone) {
