@@ -21,6 +21,8 @@ import io.reactivex.schedulers.Schedulers;
 import static com.thoughtworks.todolistexample.repository.utils.CommonUtil.booleanToInt;
 
 public class HomeViewModel extends ViewModel {
+    private final int beginIdxOfDate = 0;
+    private final int endIdxOfDate = 7;
     private MutableLiveData<ArrayList<Task>> taskResult;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private TaskRepository taskRepository;
@@ -66,7 +68,7 @@ public class HomeViewModel extends ViewModel {
     private ArrayList<Task> sortByDeadline(List<Task> tasks) {
         return (ArrayList<Task>) tasks.stream()
                 .sorted(Comparator.comparing((Task task) -> booleanToInt(task.isDone()))
-                        .thenComparing(task -> Integer.parseInt(task.getDeadline().substring(0, 7))))
+                        .thenComparing(task -> Integer.parseInt(task.getDeadline().substring(beginIdxOfDate, endIdxOfDate))))
                 .collect(Collectors.toList());
     }
 
