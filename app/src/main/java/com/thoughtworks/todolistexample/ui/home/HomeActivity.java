@@ -41,14 +41,14 @@ public class HomeActivity extends AppCompatActivity {
         ImageView goCreateBtn = findViewById(R.id.go_create);
         goCreateBtn.setOnClickListener(view -> openCreateActivity());
 
+        homeViewModel = obtainViewModel();
         RecyclerView taskContainer = findViewById(R.id.task_container);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        HomeAdapter homeAdapter = new HomeAdapter();
+        HomeAdapter homeAdapter = new HomeAdapter(homeViewModel);
 
         taskContainer.setLayoutManager(layoutManager);
         taskContainer.setAdapter(homeAdapter);
 
-        homeViewModel = obtainViewModel();
         final Observer<ArrayList<Task>> observer = tasks -> {
             homeAdapter.setTasks(tasks);
             String count = String.valueOf(tasks.size()).concat(getString(R.string.task_count));
@@ -56,7 +56,14 @@ public class HomeActivity extends AppCompatActivity {
         };
         homeViewModel.getTaskResult().observe(this, observer);
 
+        final Observer<Task> updateNotificationObserver = this::updateTask;
+        homeViewModel.getUpdateNotification().observe(this, updateNotificationObserver);
+
         getAllTasks();
+    }
+
+    private void updateTask(Task task) {
+        homeViewModel.updateTask(task);
     }
 
     private void setCurrentDate() {

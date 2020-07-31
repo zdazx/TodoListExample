@@ -1,5 +1,7 @@
 package com.thoughtworks.todolistexample.ui.home;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -24,14 +26,27 @@ public class HomeViewModel extends ViewModel {
     private final int beginIdxOfDate = 0;
     private final int endIdxOfDate = 7;
     private MutableLiveData<ArrayList<Task>> taskResult;
+    private MutableLiveData<Task> updateNotification;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private TaskRepository taskRepository;
+    public static final String HOME_VIEW_MODEL = "HomeViewModel";
 
     public LiveData<ArrayList<Task>> getTaskResult() {
         if (Objects.isNull(taskResult)) {
             taskResult = new MutableLiveData<>();
         }
         return taskResult;
+    }
+
+    public LiveData<Task> getUpdateNotification() {
+        if (Objects.isNull(updateNotification)) {
+            updateNotification = new MutableLiveData<>();
+        }
+        return updateNotification;
+    }
+
+    public void receiveUpdateTask(Task task) {
+        updateNotification.postValue(task);
     }
 
     public void setTaskRepository(TaskRepository taskRepository) {
@@ -70,6 +85,33 @@ public class HomeViewModel extends ViewModel {
                 .sorted(Comparator.comparing((Task task) -> booleanToInt(task.isDone()))
                         .thenComparing(task -> Integer.parseInt(task.getDeadline().substring(beginIdxOfDate, endIdxOfDate))))
                 .collect(Collectors.toList());
+    }
+
+    public void updateTask(Task task) {
+        taskRepository.update(task)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new MaybeObserver<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        compositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(Integer integer) {
+                        Log.d(HOME_VIEW_MODEL, "update success");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override

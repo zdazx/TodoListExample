@@ -19,9 +19,11 @@ import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toDate;
 
 public class HomeAdapter extends RecyclerView.Adapter {
     private ArrayList<Task> tasks;
+    private HomeViewModel homeViewModel;
 
-    public HomeAdapter() {
+    public HomeAdapter(HomeViewModel homeViewModel) {
         tasks = new ArrayList<>();
+        this.homeViewModel = homeViewModel;
     }
 
     public void setTasks(ArrayList<Task> tasks) {
@@ -54,11 +56,23 @@ public class HomeAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Task task = tasks.get(position);
-        ((HomeViewHolder)holder).selectDoneCheckBox.setChecked(task.isDone());
-        ((HomeViewHolder)holder).titleView.setText(task.getTitle());
-        ((HomeViewHolder)holder).deadlineView.setText(toDate(task.getDeadline()));
-        if (task.isDone()) {
-            ((HomeViewHolder)holder).titleView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        ((HomeViewHolder) holder).selectDoneCheckBox.setChecked(task.isDone());
+        ((HomeViewHolder) holder).titleView.setText(task.getTitle());
+        ((HomeViewHolder) holder).deadlineView.setText(toDate(task.getDeadline()));
+        paintStrikeLine(((HomeViewHolder) holder).titleView, task.isDone());
+
+        ((HomeViewHolder) holder).selectDoneCheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
+            task.setDone(b);
+            homeViewModel.receiveUpdateTask(task);
+            paintStrikeLine(((HomeViewHolder) holder).titleView, b);
+        });
+    }
+
+    private void paintStrikeLine(TextView textView, boolean isDone) {
+        if (isDone) {
+            textView.setPaintFlags(textView.getPaintFlags() | (Paint.STRIKE_THRU_TEXT_FLAG));
+        } else {
+            textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
     }
 
