@@ -18,6 +18,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.thoughtworks.todolistexample.repository.utils.CommonUtil.booleanToInt;
+
 public class HomeViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Task>> taskResult;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -63,7 +65,8 @@ public class HomeViewModel extends ViewModel {
 
     private ArrayList<Task> sortByDeadline(List<Task> tasks) {
         return (ArrayList<Task>) tasks.stream()
-                .sorted(Comparator.comparing(task -> Integer.parseInt(task.getDeadline().substring(0, 7))))
+                .sorted(Comparator.comparing((Task task) -> booleanToInt(task.isDone()))
+                        .thenComparing(task -> Integer.parseInt(task.getDeadline().substring(0, 7))))
                 .collect(Collectors.toList());
     }
 
