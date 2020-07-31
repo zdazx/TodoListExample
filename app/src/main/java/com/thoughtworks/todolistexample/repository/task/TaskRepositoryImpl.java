@@ -3,7 +3,6 @@ package com.thoughtworks.todolistexample.repository.task;
 import com.thoughtworks.todolistexample.repository.task.entity.Task;
 import com.thoughtworks.todolistexample.ui.create.TaskRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Maybe;
@@ -23,5 +22,10 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public Maybe<List<Task>> getAllTasks() {
         return taskDataSource.getAllTasks();
+    }
+
+    @Override
+    public Maybe<Integer> update(Task task) {
+        return taskDataSource.update(task);
     }
 }

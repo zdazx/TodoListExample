@@ -11,4 +11,6 @@ public interface TaskRepository {
 
     Maybe<List<Task>> getAllTasks();
 
+    Maybe<Integer> update(Task task);
+
 }

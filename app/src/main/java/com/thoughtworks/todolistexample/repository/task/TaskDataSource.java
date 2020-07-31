@@ -11,5 +11,6 @@ public interface TaskDataSource {
 
     Maybe<List<Task>> getAllTasks();
 
+    Maybe<Integer> update(Task task);
 
 }

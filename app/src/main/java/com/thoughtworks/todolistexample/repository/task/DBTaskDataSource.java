@@ -3,6 +3,7 @@ package com.thoughtworks.todolistexample.repository.task;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.thoughtworks.todolistexample.repository.task.entity.Task;
 
@@ -19,5 +20,8 @@ public interface DBTaskDataSource extends TaskDataSource {
 
     @Query("SELECT * FROM task")
     Maybe<List<Task>> getAllTasks();
+
+    @Update
+    Maybe<Integer> update(Task task);
 
 }
