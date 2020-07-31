@@ -17,4 +17,8 @@
     <string name="year">年</string>
     <string name="month">月</string>
     <string name="day">日</string>
+    <string name="update_success">修改成功</string>
+    <string name="update_fail">修改失败</string>
+    <string name="delete_success">删除成功</string>
+    <string name="delete_fail">删除失败</string>
 </resources>
