@@ -79,6 +79,13 @@ public class CreateActivity extends AppCompatActivity {
         };
         createViewModel.getCreateResult().observe(this, observer);
 
+        final Observer<Boolean> updateObserver = aBoolean -> {
+            Toast.makeText(getApplicationContext(), aBoolean ? getString(R.string.update_success) : getString(R.string.update_fail), Toast.LENGTH_SHORT)
+                    .show();
+            openHomeActivity();
+        };
+        createViewModel.getUpdateResult().observe(this, updateObserver);
+
     }
 
     private void init(Task task) {
@@ -106,7 +113,13 @@ public class CreateActivity extends AppCompatActivity {
         if (cannotCreateTask()) {
             return;
         }
-        createViewModel.save(buildTask());
+
+        if (Objects.nonNull(existTask)) {
+            createViewModel.update(buildTask(true));
+            return;
+        }
+
+        createViewModel.save(buildTask(false));
     }
 
     private boolean cannotCreateTask() {
@@ -121,9 +134,17 @@ public class CreateActivity extends AppCompatActivity {
         return false;
     }
 
-    private Task buildTask() {
+    private Task buildTask(boolean isHaveTask) {
         Task task = new Task();
         try {
+            if (isHaveTask) {
+                existTask.setTitle(titleET.getText().toString());
+                existTask.setDescription(descriptionET.getText().toString());
+                existTask.setDeadline(toStringTimestamp(dateView.getText().toString()));
+                existTask.setDone(isDoneCheckbox.isChecked());
+                existTask.setRemind(isRemindSwitch.isChecked());
+                return existTask;
+            }
             task.setTitle(titleET.getText().toString());
             task.setDescription(descriptionET.getText().toString());
             task.setDeadline(toStringTimestamp(dateView.getText().toString()));
