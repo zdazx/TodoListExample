@@ -41,4 +41,16 @@ public class DateUtil {
         }
         return new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA).format(Long.parseLong(timestamp));
     }
+
+    public static int toYear(String date) {
+        return Integer.parseInt(date.substring(0, date.indexOf("年")));
+    }
+
+    public static int toMonth(String date) {
+        return Integer.parseInt(date.substring(date.indexOf("年") + 1, date.indexOf("月")));
+    }
+
+    public static int toDay(String date) {
+        return Integer.parseInt(date.substring(date.indexOf("月") + 1, date.indexOf("日")));
+    }
 }
