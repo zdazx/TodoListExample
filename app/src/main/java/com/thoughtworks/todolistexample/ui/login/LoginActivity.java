@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel = obtainViewModel();
         final Observer<Boolean> observer = aBoolean -> {
             if (!aBoolean) {
-                Toast.makeText(getApplicationContext(), "用户不存在", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.user_not_exist), Toast.LENGTH_LONG).show();
                 return;
             }
             openHomeActivity();
@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void openHomeActivity() {
         Log.d(LOGIN_ACTIVITY, "login success");
-        Toast.makeText(getApplicationContext(), "Welcome!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.login_welcome), Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
@@ -87,9 +87,9 @@ public class LoginActivity extends AppCompatActivity {
             setLoginBtnStyle(false, R.color.colorDeepGray, R.drawable.login_button_not_enable);
 
             if (!isUsernameValid()) {
-                usernameView.setError("用户名必须是3 ~ 12为字母或数字");
+                usernameView.setError(getString(R.string.username_error));
             } else if (!isPasswordValid()) {
-                passwordView.setError("密码长度必须是6 ~ 18位字符");
+                passwordView.setError(getString(R.string.password_error));
             } else {
                 setLoginBtnStyle(true, R.color.colorWhite, R.drawable.login_button_enable);
             }

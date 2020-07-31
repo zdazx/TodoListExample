@@ -109,7 +109,9 @@ public class CreateActivity extends AppCompatActivity {
     private void showDateDialog() {
         Calendar now = Calendar.getInstance();
         new DatePickerDialog(this, (datePicker, i, i1, i2) -> {
-            String date = i + "年" + i1 + "月" + i2 + "日";
+            String date = i + getString(R.string.year) +
+                    i1 + getString(R.string.month) +
+                    i2 + getString(R.string.day);
             dateView.setText(date);
         }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH)).show();
     }

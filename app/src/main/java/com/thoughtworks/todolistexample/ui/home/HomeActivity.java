@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         homeViewModel = obtainViewModel();
         final Observer<ArrayList<Task>> observer = tasks -> {
             homeAdapter.setTasks(tasks);
-            String count = tasks.size() + "个任务";
+            String count = String.valueOf(tasks.size()).concat(getString(R.string.task_count));
             taskCountTV.setText(count);
         };
         homeViewModel.getTaskResult().observe(this, observer);
