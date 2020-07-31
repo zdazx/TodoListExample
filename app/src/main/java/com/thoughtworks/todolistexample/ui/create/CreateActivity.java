@@ -3,6 +3,7 @@ package com.thoughtworks.todolistexample.ui.create;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.gson.Gson;
 import com.thoughtworks.todolistexample.MainApplication;
 import com.thoughtworks.todolistexample.R;
 import com.thoughtworks.todolistexample.repository.task.entity.Task;
@@ -22,12 +24,18 @@ import com.thoughtworks.todolistexample.ui.home.HomeActivity;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Objects;
 
 import static com.thoughtworks.todolistexample.constant.Constants.CREATE_FAILED;
 import static com.thoughtworks.todolistexample.constant.Constants.CREATE_SUCCESS;
+import static com.thoughtworks.todolistexample.constant.Constants.IS_HAVE_TASK;
 import static com.thoughtworks.todolistexample.constant.Constants.MUST_EDIT_DATE;
 import static com.thoughtworks.todolistexample.constant.Constants.MUST_EDIT_TITLE;
+import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toDate;
+import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toDay;
+import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toMonth;
 import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toStringTimestamp;
+import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toYear;
 
 public class CreateActivity extends AppCompatActivity {
     private TextView dateView;
@@ -35,12 +43,19 @@ public class CreateActivity extends AppCompatActivity {
     private EditText descriptionET;
     private CheckBox isDoneCheckbox;
     private Switch isRemindSwitch;
+    private ImageView deleteImgView;
     private CreateViewModel createViewModel;
+    private Task existTask;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        Intent intent = getIntent();
+        String existTaskJson = intent.getStringExtra(IS_HAVE_TASK.getName());
+        existTask = new Gson().fromJson(existTaskJson, Task.class);
+
         dateView = findViewById(R.id.select_date);
         dateView.setOnClickListener(view -> showDateDialog());
 
@@ -48,8 +63,13 @@ public class CreateActivity extends AppCompatActivity {
         descriptionET = findViewById(R.id.description);
         isDoneCheckbox = findViewById(R.id.is_done_checkbox);
         isRemindSwitch = findViewById(R.id.is_remind_switch);
+        deleteImgView = findViewById(R.id.delete);
         ImageView confirmImgView = findViewById(R.id.confirm);
         confirmImgView.setOnClickListener(view -> saveTask());
+
+        if (Objects.nonNull(existTask)) {
+            init(existTask);
+        }
 
         createViewModel = obtainViewModel();
         final Observer<Boolean> observer = aBoolean -> {
@@ -59,6 +79,15 @@ public class CreateActivity extends AppCompatActivity {
         };
         createViewModel.getCreateResult().observe(this, observer);
 
+    }
+
+    private void init(Task task) {
+        titleET.setText(task.getTitle());
+        descriptionET.setText(task.getDescription());
+        isDoneCheckbox.setChecked(task.isDone());
+        isRemindSwitch.setChecked(task.isRemind());
+        dateView.setText(toDate(task.getDeadline()));
+        deleteImgView.setVisibility(View.VISIBLE);
     }
 
     private void openHomeActivity() {
@@ -107,12 +136,24 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private void showDateDialog() {
-        Calendar now = Calendar.getInstance();
+        int year, month, day;
+
+        String dateViewText = dateView.getText().toString();
+        if (!dateViewText.equals(getString(R.string.date))) {
+            year = toYear(dateViewText);
+            month = toMonth(dateViewText);
+            day = toDay(dateViewText);
+        } else {
+            Calendar now = Calendar.getInstance();
+            year = now.get(Calendar.YEAR);
+            month = now.get(Calendar.MONTH);
+            day = now.get(Calendar.DAY_OF_MONTH);
+        }
         new DatePickerDialog(this, (datePicker, i, i1, i2) -> {
             String date = i + getString(R.string.year) +
                     i1 + getString(R.string.month) +
                     i2 + getString(R.string.day);
             dateView.setText(date);
-        }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH)).show();
+        }, year, month, day).show();
     }
 }
