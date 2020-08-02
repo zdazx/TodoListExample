@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,6 +16,7 @@ import com.thoughtworks.todolistexample.MainApplication;
 import com.thoughtworks.todolistexample.R;
 import com.thoughtworks.todolistexample.ui.home.HomeActivity;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +25,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordView;
     private LoginViewModel loginViewModel;
     private Button loginButton;
-    private final String LOGIN_ACTIVITY = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +40,28 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(view -> login());
 
         loginViewModel = obtainViewModel();
-        final Observer<Boolean> observer = aBoolean -> {
-            if (!aBoolean) {
-                Toast.makeText(getApplicationContext(), getString(R.string.user_not_exist), Toast.LENGTH_LONG).show();
-                return;
-            }
-            openHomeActivity();
-        };
+        final Observer<LoginResult> observer = this::showLoginResult;
         loginViewModel.getLoginResult().observe(this, observer);
 
+    }
+
+    private void showLoginResult(LoginResult loginResult) {
+        if (Objects.nonNull(loginResult.getFail())) {
+            showLogFailedInfo(loginResult.getFail());
+        }
+        if (Objects.nonNull(loginResult.getSuccess())) {
+            showLogSuccessInfo(loginResult.getSuccess());
+            openHomeActivity();
+        }
+    }
+
+    private void showLogSuccessInfo(LoggedInUserView loggedInUser) {
+        String welcome = "Welcome! " + loggedInUser.getDisplayName();
+        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+    }
+
+    private void showLogFailedInfo(Integer failedInfo) {
+        Toast.makeText(getApplicationContext(), getString(failedInfo), Toast.LENGTH_LONG).show();
     }
 
     private LoginViewModel obtainViewModel() {
@@ -60,8 +72,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void openHomeActivity() {
-        Log.d(LOGIN_ACTIVITY, "login success");
-        Toast.makeText(getApplicationContext(), getString(R.string.login_welcome), Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
