@@ -8,14 +8,19 @@ import io.reactivex.Maybe;
 
 public class UserRepositoryImpl implements UserRepository {
     private UserDataSource userDataSource;
+    private RemoteDataSource remoteDataSource;
 
     public UserRepositoryImpl(UserDataSource userDataSource) {
         this.userDataSource = userDataSource;
+        remoteDataSource = new RemoteDataSource();
     }
 
     @Override
     public Maybe<User> findByName(String name) {
-        return userDataSource.findByName(name);
+        return userDataSource.findByName(name)
+                .switchIfEmpty(remoteDataSource.getRemoteUser())
+                .doOnSuccess(user -> userDataSource.save(user));
+
     }
 
     @Override
