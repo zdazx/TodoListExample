@@ -6,7 +6,7 @@ import com.thoughtworks.todolistexample.repository.utils.GsonUtil;
 import io.reactivex.Maybe;
 import io.reactivex.internal.operators.maybe.MaybeObserveOn;
 
-import static com.thoughtworks.todolistexample.constant.ConstantValue.REMOTE_USER_URL;
+import static com.thoughtworks.todolistexample.constant.BusinessConstant.REMOTE_USER_URL;
 
 public class RemoteDataSource {
     public Maybe<User> getRemoteUser() {
