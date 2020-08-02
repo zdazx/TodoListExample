@@ -21,4 +21,8 @@
     <string name="update_fail">修改失败</string>
     <string name="delete_success">删除成功</string>
     <string name="delete_fail">删除失败</string>
+    <string name="create_success">创建成功</string>
+    <string name="create_failed">创建失败</string>
+    <string name="must_edit_title">请将标题填写完整</string>
+    <string name="must_select_date">请选择日期</string>
 </resources>

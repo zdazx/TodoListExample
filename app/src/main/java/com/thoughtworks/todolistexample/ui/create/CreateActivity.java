@@ -26,11 +26,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Objects;
 
-import static com.thoughtworks.todolistexample.constant.Constants.CREATE_FAILED;
-import static com.thoughtworks.todolistexample.constant.Constants.CREATE_SUCCESS;
 import static com.thoughtworks.todolistexample.constant.Constants.IS_HAVE_TASK;
-import static com.thoughtworks.todolistexample.constant.Constants.MUST_EDIT_DATE;
-import static com.thoughtworks.todolistexample.constant.Constants.MUST_EDIT_TITLE;
 import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toDate;
 import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toDay;
 import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toMonth;
@@ -74,7 +70,7 @@ public class CreateActivity extends AppCompatActivity {
 
         createViewModel = obtainViewModel();
         final Observer<Boolean> observer = aBoolean -> {
-            Toast.makeText(getApplicationContext(), aBoolean ? CREATE_SUCCESS.getName() : CREATE_FAILED.getName(), Toast.LENGTH_SHORT)
+            Toast.makeText(getApplicationContext(), aBoolean ? getString(R.string.create_success) : getString(R.string.create_failed), Toast.LENGTH_SHORT)
                     .show();
             openHomeActivity();
         };
@@ -139,11 +135,11 @@ public class CreateActivity extends AppCompatActivity {
 
     private boolean cannotCreateTask() {
         if (titleET.getText().toString().equals("")) {
-            Toast.makeText(getApplicationContext(), MUST_EDIT_TITLE.getName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.must_edit_title), Toast.LENGTH_SHORT).show();
             return true;
         }
         if (dateView.getText().toString().equals(getResources().getString(R.string.date))) {
-            Toast.makeText(getApplicationContext(), MUST_EDIT_DATE.getName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.must_select_date), Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;
