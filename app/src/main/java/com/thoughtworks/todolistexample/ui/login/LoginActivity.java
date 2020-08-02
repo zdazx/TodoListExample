@@ -17,8 +17,6 @@ import com.thoughtworks.todolistexample.R;
 import com.thoughtworks.todolistexample.ui.home.HomeActivity;
 
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText usernameView;
@@ -40,9 +38,30 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(view -> login());
 
         loginViewModel = obtainViewModel();
+
+        final Observer<LoginFormState> formStateObserver = this::showFormInputResult;
+        loginViewModel.getLoginFormStateResult().observe(this, formStateObserver);
+
         final Observer<LoginResult> observer = this::showLoginResult;
         loginViewModel.getLoginResult().observe(this, observer);
 
+    }
+
+    private void showFormInputResult(LoginFormState loginFormState) {
+        setLoginBtnStyle(false, R.color.colorDeepGray, R.drawable.login_button_not_enable);
+        if (Objects.nonNull(loginFormState.getUsernameError())) {
+            usernameView.setError(getString(R.string.username_error));
+        } else if (Objects.nonNull(loginFormState.getPasswordError())) {
+            passwordView.setError(getString(R.string.password_error));
+        } else {
+            setLoginBtnStyle(true, R.color.colorWhite, R.drawable.login_button_enable);
+        }
+    }
+
+    private void setLoginBtnStyle(boolean isEnable, int textColor, int background) {
+        loginButton.setEnabled(isEnable);
+        loginButton.setTextColor(getColor(textColor));
+        loginButton.setBackground(getDrawable(background));
     }
 
     private void showLoginResult(LoginResult loginResult) {
@@ -94,33 +113,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            setLoginBtnStyle(false, R.color.colorDeepGray, R.drawable.login_button_not_enable);
-
-            if (!isUsernameValid()) {
-                usernameView.setError(getString(R.string.username_error));
-            } else if (!isPasswordValid()) {
-                passwordView.setError(getString(R.string.password_error));
-            } else {
-                setLoginBtnStyle(true, R.color.colorWhite, R.drawable.login_button_enable);
-            }
-        }
-
-        private boolean isPasswordValid() {
-            String password = passwordView.getText().toString();
-            return password.length() > 5 && password.length() < 19;
-        }
-
-        private boolean isUsernameValid() {
-            String username = usernameView.getText().toString().trim();
-            Pattern pattern = Pattern.compile("[0-9a-zA-Z]{3,12}");
-            Matcher matcher = pattern.matcher(username);
-            return matcher.matches();
-        }
-
-        private void setLoginBtnStyle(boolean isEnable, int textColor, int background) {
-            loginButton.setEnabled(isEnable);
-            loginButton.setTextColor(getColor(textColor));
-            loginButton.setBackground(getDrawable(background));
+            loginViewModel.loginDataChanged(usernameView.getText().toString().trim(), passwordView.getText().toString());
         }
     }
 }

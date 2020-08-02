@@ -8,6 +8,8 @@ import com.thoughtworks.todolistexample.R;
 import com.thoughtworks.todolistexample.repository.user.entity.User;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.MaybeObserver;
 import io.reactivex.disposables.CompositeDisposable;
@@ -18,6 +20,7 @@ import static com.thoughtworks.todolistexample.repository.utils.Encryptor.md5;
 
 public class LoginViewModel extends ViewModel {
     private MutableLiveData<LoginResult> loginResult;
+    private MutableLiveData<LoginFormState> loginFormStateResult;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private UserRepository userRepository;
 
@@ -30,6 +33,13 @@ public class LoginViewModel extends ViewModel {
             loginResult = new MutableLiveData<>();
         }
         return loginResult;
+    }
+
+    public LiveData<LoginFormState> getLoginFormStateResult() {
+        if (Objects.isNull(loginFormStateResult)) {
+            loginFormStateResult = new MutableLiveData<>();
+        }
+        return loginFormStateResult;
     }
 
     public void login(String username, String password) {
@@ -65,6 +75,26 @@ public class LoginViewModel extends ViewModel {
 
                     }
                 });
+    }
+
+    public void loginDataChanged(String username, String password) {
+        if (!isUsernameValid(username)) {
+            loginFormStateResult.postValue(new LoginFormState(R.string.username_error, null));
+        } else if (!isPasswordValid(password)) {
+            loginFormStateResult.postValue(new LoginFormState(null, R.string.password_error));
+        } else {
+            loginFormStateResult.postValue(new LoginFormState(true));
+        }
+    }
+
+    private boolean isPasswordValid(String password) {
+        return password.length() > 5 && password.length() < 19;
+    }
+
+    private boolean isUsernameValid(String username) {
+        Pattern pattern = Pattern.compile("[0-9a-zA-Z]{3,12}");
+        Matcher matcher = pattern.matcher(username);
+        return matcher.matches();
     }
 
     @Override
