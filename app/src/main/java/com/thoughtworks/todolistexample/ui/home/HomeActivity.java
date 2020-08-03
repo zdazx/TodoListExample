@@ -36,7 +36,6 @@ public class HomeActivity extends AppCompatActivity {
     private TextView todayTV;
     private TextView monthTV;
     private TextView popupTV;
-    private TextView logoutTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +89,7 @@ public class HomeActivity extends AppCompatActivity {
         popupWindow.setWidth(120);
         popupWindow.setHeight(100);
         popupWindow.setFocusable(true);
-        logoutTV = inflate.findViewById(R.id.logout);
+        TextView logoutTV = inflate.findViewById(R.id.logout);
         logoutTV.setOnClickListener(view -> logout());
         popupWindow.showAsDropDown(popupTV, -30, 0);
     }
