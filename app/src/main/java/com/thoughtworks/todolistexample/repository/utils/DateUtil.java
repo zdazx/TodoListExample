@@ -31,8 +31,7 @@ public class DateUtil {
     }
 
     public static String toCurrentMonth() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
-        return dateFormat.format(new Date());
+        return String.format(Locale.US, "%tB", new Date());
     }
 
     public static String toDate(String timestamp) {
