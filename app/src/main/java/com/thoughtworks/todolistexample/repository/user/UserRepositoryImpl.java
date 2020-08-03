@@ -18,8 +18,8 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Maybe<User> findByName(String name) {
         return userDataSource.findByName(name)
-                .switchIfEmpty(remoteDataSource.getRemoteUser())
-                .doOnSuccess(user -> userDataSource.save(user));
+                .switchIfEmpty(remoteDataSource.getRemoteUser()
+                        .doOnSuccess(user -> userDataSource.save(user)));
 
     }
 
