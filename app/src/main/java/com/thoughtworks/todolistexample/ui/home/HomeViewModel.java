@@ -26,7 +26,7 @@ public class HomeViewModel extends ViewModel {
     private final int beginIdxOfDate = 0;
     private final int endIdxOfDate = 7;
     private MutableLiveData<ArrayList<Task>> taskResult;
-    private MutableLiveData<Task> updateNotification;
+    private MutableLiveData<Task> updateTaskIsDoneNotification;
     private MutableLiveData<Task> goToDetailNotification;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private TaskRepository taskRepository;
@@ -39,11 +39,11 @@ public class HomeViewModel extends ViewModel {
         return taskResult;
     }
 
-    public LiveData<Task> getUpdateNotification() {
-        if (Objects.isNull(updateNotification)) {
-            updateNotification = new MutableLiveData<>();
+    public LiveData<Task> getUpdateTaskIsDoneNotification() {
+        if (Objects.isNull(updateTaskIsDoneNotification)) {
+            updateTaskIsDoneNotification = new MutableLiveData<>();
         }
-        return updateNotification;
+        return updateTaskIsDoneNotification;
     }
 
     public LiveData<Task> getGoToDetailNotification() {
@@ -57,8 +57,8 @@ public class HomeViewModel extends ViewModel {
         goToDetailNotification.postValue(task);
     }
 
-    public void receiveUpdateTask(Task task) {
-        updateNotification.postValue(task);
+    public void receiveUpdateTaskIsDone(Task task) {
+        updateTaskIsDoneNotification.postValue(task);
     }
 
     public void setTaskRepository(TaskRepository taskRepository) {

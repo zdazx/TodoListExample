@@ -63,7 +63,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
         ((HomeViewHolder) holder).selectDoneCheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
             task.setDone(b);
-            homeViewModel.receiveUpdateTask(task);
+            homeViewModel.receiveUpdateTaskIsDone(task);
             paintStrikeLine(((HomeViewHolder) holder).titleView, b);
         });
 
