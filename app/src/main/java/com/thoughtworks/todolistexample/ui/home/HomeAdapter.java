@@ -67,7 +67,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             paintStrikeLine(((HomeViewHolder) holder).titleView, b);
         });
 
-        holder.itemView.setOnClickListener(view -> homeViewModel.receiveDetailTask(task));
+        holder.itemView.setOnClickListener(view -> homeViewModel.receiveGoToDetailTask(task));
     }
 
     private void paintStrikeLine(TextView textView, boolean isDone) {

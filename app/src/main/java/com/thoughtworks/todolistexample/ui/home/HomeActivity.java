@@ -70,8 +70,8 @@ public class HomeActivity extends AppCompatActivity {
         final Observer<Task> updateNotificationObserver = this::updateTask;
         homeViewModel.getUpdateNotification().observe(this, updateNotificationObserver);
 
-        final Observer<Task> detailNotificationObserver = this::openCreateActivity;
-        homeViewModel.getDetailNotification().observe(this, detailNotificationObserver);
+        final Observer<Task> goToDetailNotificationObserver = this::openCreateActivity;
+        homeViewModel.getGoToDetailNotification().observe(this, goToDetailNotificationObserver);
 
         getAllTasks();
     }
