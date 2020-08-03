@@ -48,20 +48,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showFormInputResult(LoginFormState loginFormState) {
-        setLoginBtnStyle(false, R.color.colorDeepGray, R.drawable.login_button_not_enable);
+        setLoginBtnStyle(false, R.color.colorDeepGray);
         if (Objects.nonNull(loginFormState.getUsernameError())) {
             usernameView.setError(getString(R.string.username_error));
         } else if (Objects.nonNull(loginFormState.getPasswordError())) {
             passwordView.setError(getString(R.string.password_error));
         } else {
-            setLoginBtnStyle(true, R.color.colorWhite, R.drawable.login_button_enable);
+            setLoginBtnStyle(true, R.color.colorWhite);
         }
     }
 
-    private void setLoginBtnStyle(boolean isEnable, int textColor, int background) {
+    private void setLoginBtnStyle(boolean isEnable, int textColor) {
         loginButton.setEnabled(isEnable);
         loginButton.setTextColor(getColor(textColor));
-        loginButton.setBackground(getDrawable(background));
     }
 
     private void showLoginResult(LoginResult loginResult) {
