@@ -173,7 +173,7 @@ public class CreateActivity extends AppCompatActivity {
         String dateViewText = dateView.getText().toString();
         if (!dateViewText.equals(getString(R.string.date))) {
             year = toYear(dateViewText);
-            month = toMonth(dateViewText);
+            month = toMonth(dateViewText) - 1;
             day = toDay(dateViewText);
         } else {
             Calendar now = Calendar.getInstance();
@@ -183,7 +183,7 @@ public class CreateActivity extends AppCompatActivity {
         }
         new DatePickerDialog(this, (datePicker, i, i1, i2) -> {
             String date = i + getString(R.string.year) +
-                    i1 + getString(R.string.month) +
+                    (i1 + 1) + getString(R.string.month) +
                     i2 + getString(R.string.day);
             dateView.setText(date);
         }, year, month, day).show();
