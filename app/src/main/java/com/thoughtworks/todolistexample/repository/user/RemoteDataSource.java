@@ -6,11 +6,10 @@ import com.thoughtworks.todolistexample.repository.utils.GsonUtil;
 import io.reactivex.Maybe;
 import io.reactivex.internal.operators.maybe.MaybeObserveOn;
 
-import static com.thoughtworks.todolistexample.constant.BusinessConstant.REMOTE_USER_URL;
-
 public class RemoteDataSource {
     public Maybe<User> getRemoteUser() {
+        final String url = "https://twc-android-bootcamp.github.io/fake-data/data/user.json";
         return MaybeObserveOn
-                .create(emitter -> emitter.onSuccess(GsonUtil.getData(REMOTE_USER_URL, User.class)));
+                .create(emitter -> emitter.onSuccess(GsonUtil.getData(url, User.class)));
     }
 }
