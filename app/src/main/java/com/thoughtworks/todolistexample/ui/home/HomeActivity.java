@@ -1,8 +1,12 @@
 package com.thoughtworks.todolistexample.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -18,6 +22,7 @@ import com.thoughtworks.todolistexample.R;
 import com.thoughtworks.todolistexample.repository.task.entity.Task;
 import com.thoughtworks.todolistexample.ui.create.CreateActivity;
 import com.thoughtworks.todolistexample.ui.create.TaskRepository;
+import com.thoughtworks.todolistexample.ui.login.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -30,12 +35,16 @@ public class HomeActivity extends AppCompatActivity {
     private HomeViewModel homeViewModel;
     private TextView todayTV;
     private TextView monthTV;
+    private TextView popupTV;
+    private TextView logoutTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        popupTV = findViewById(R.id.popup);
+        popupTV.setOnClickListener(view -> showPopupWindow());
         todayTV = findViewById(R.id.today);
         monthTV = findViewById(R.id.month);
         TextView taskCountTV = findViewById(R.id.task_count);
@@ -66,6 +75,24 @@ public class HomeActivity extends AppCompatActivity {
         homeViewModel.getDetailNotification().observe(this, detailNotificationObserver);
 
         getAllTasks();
+    }
+
+    private void logout() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void showPopupWindow() {
+        @SuppressLint("InflateParams")
+        View inflate = LayoutInflater.from(getApplicationContext()).inflate(R.layout.popup_window, null);
+        PopupWindow popupWindow = new PopupWindow(inflate);
+        popupWindow.setWidth(120);
+        popupWindow.setHeight(100);
+        popupWindow.setFocusable(true);
+        logoutTV = inflate.findViewById(R.id.logout);
+        logoutTV.setOnClickListener(view -> logout());
+        popupWindow.showAsDropDown(popupTV, -30, 0);
     }
 
     private void updateTask(Task task) {
