@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toDateOfMonthAndDay;
 
-public class HomeAdapter extends RecyclerView.Adapter {
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {
     private ArrayList<Task> tasks;
     private HomeViewModel homeViewModel;
 
@@ -31,7 +31,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
         this.notifyDataSetChanged();
     }
 
-    private static class HomeViewHolder extends RecyclerView.ViewHolder {
+    static class HomeViewHolder extends RecyclerView.ViewHolder {
         public CheckBox selectDoneCheckBox;
         public TextView titleView;
         public TextView deadlineView;
@@ -54,14 +54,14 @@ public class HomeAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
         Task task = tasks.get(position);
-        ((HomeViewHolder) holder).selectDoneCheckBox.setChecked(task.isDone());
-        ((HomeViewHolder) holder).titleView.setText(task.getTitle());
-        ((HomeViewHolder) holder).deadlineView.setText(toDateOfMonthAndDay(task.getDeadline()));
-        paintStrikeLine(((HomeViewHolder) holder).titleView, task.isDone());
+        holder.selectDoneCheckBox.setChecked(task.isDone());
+        holder.titleView.setText(task.getTitle());
+        holder.deadlineView.setText(toDateOfMonthAndDay(task.getDeadline()));
+        paintStrikeLine(holder.titleView, task.isDone());
 
-        ((HomeViewHolder) holder).selectDoneCheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
+        holder.selectDoneCheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
             task.setDone(b);
             homeViewModel.receiveUpdateTaskIsDone(task);
             paintStrikeLine(((HomeViewHolder) holder).titleView, b);
