@@ -57,7 +57,8 @@ public class HomeViewModel extends ViewModel {
         goToDetailNotification.postValue(task);
     }
 
-    public void receiveUpdateTaskIsDone(Task task) {
+    public void receiveUpdateTaskIsDone(Task task, boolean isDone) {
+        task.setDone(isDone);
         updateTaskIsDoneNotification.postValue(task);
     }
 
