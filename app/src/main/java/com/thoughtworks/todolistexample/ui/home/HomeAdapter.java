@@ -42,6 +42,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
             titleView = itemView.findViewById(R.id.task_title);
             deadlineView = itemView.findViewById(R.id.task_deadline);
         }
+
+        public void reset() {
+            selectDoneCheckBox.setOnCheckedChangeListener(null);
+        }
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull HomeViewHolder holder) {
+        holder.reset();
+        super.onViewRecycled(holder);
     }
 
     @NonNull

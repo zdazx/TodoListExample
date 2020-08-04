@@ -59,6 +59,11 @@ public class HomeViewModel extends ViewModel {
 
     public void receiveUpdateTaskIsDone(Task task, boolean isDone) {
         task.setDone(isDone);
+        ArrayList<Task> tasks = taskResult.getValue();
+        if (tasks == null) {
+            return;
+        }
+        taskResult.postValue(sortByDeadline(tasks));
         updateTaskIsDoneNotification.postValue(task);
     }
 
