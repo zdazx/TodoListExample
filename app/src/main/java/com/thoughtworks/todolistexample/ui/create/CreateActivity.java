@@ -32,6 +32,7 @@ import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toDay;
 import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toMonth;
 import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toStringTimestamp;
 import static com.thoughtworks.todolistexample.repository.utils.DateUtil.toYear;
+import static com.thoughtworks.todolistexample.ui.home.AlarmService.triggerTaskAlarm;
 
 public class CreateActivity extends AppCompatActivity {
     private TextView dateView;
@@ -130,7 +131,11 @@ public class CreateActivity extends AppCompatActivity {
             return;
         }
 
-        createViewModel.save(buildTask(false));
+        Task task = buildTask(false);
+        createViewModel.save(task);
+        if (isRemindSwitch.isChecked()) {
+            triggerTaskAlarm(getApplicationContext(), task);
+        }
     }
 
     private boolean cannotCreateTask() {
