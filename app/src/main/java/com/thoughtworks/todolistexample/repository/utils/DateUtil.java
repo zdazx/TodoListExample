@@ -18,6 +18,11 @@ public class DateUtil {
         return String.valueOf(date.getTime());
     }
 
+    public static Date toDateTime(String timestamp) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
+        return dateFormat.parse(timestamp);
+    }
+
     public static String toDateOfMonthAndDay(String timestamp) {
         if (Objects.isNull(timestamp) || timestamp.equals("")) {
             return "";
