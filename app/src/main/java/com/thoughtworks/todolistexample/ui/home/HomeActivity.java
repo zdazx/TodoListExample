@@ -1,7 +1,9 @@
 package com.thoughtworks.todolistexample.ui.home;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,7 +81,17 @@ public class HomeActivity extends AppCompatActivity {
     private void logout() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        clearLogState();
         startActivity(intent);
+    }
+
+    private void clearLogState() {
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.shared_file_id), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.username), "");
+        editor.putString(getString(R.string.password), "");
+        editor.putString(getString(R.string.is_auto_login), "false");
+        editor.apply();
     }
 
     private void showPopupWindow() {
