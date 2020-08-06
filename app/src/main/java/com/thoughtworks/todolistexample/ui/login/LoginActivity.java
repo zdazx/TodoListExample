@@ -1,6 +1,8 @@
 package com.thoughtworks.todolistexample.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +18,7 @@ import com.thoughtworks.todolistexample.MainApplication;
 import com.thoughtworks.todolistexample.R;
 import com.thoughtworks.todolistexample.ui.home.HomeActivity;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
@@ -23,11 +26,15 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordView;
     private LoginViewModel loginViewModel;
     private Button loginButton;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        sharedPreferences = getSharedPreferences(getString(R.string.shared_file_id), Context.MODE_PRIVATE);
+        judgeAutoLogin();
 
         usernameView = findViewById(R.id.username);
         passwordView = findViewById(R.id.password);
@@ -45,6 +52,15 @@ public class LoginActivity extends AppCompatActivity {
         final Observer<LoginResult> observer = this::showLoginResult;
         loginViewModel.getLoginResult().observe(this, observer);
 
+    }
+
+    private void judgeAutoLogin() {
+        Map<String, ?> all = sharedPreferences.getAll();
+        if (Objects.equals(all.get(getString(R.string.is_auto_login)), "true")) {
+            String welcome = "Welcome back! " + all.get(getString(R.string.username));
+            Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG ).show();
+            openHomeActivity();
+        }
     }
 
     private void showFormInputResult(LoginFormState loginFormState) {
@@ -69,8 +85,18 @@ public class LoginActivity extends AppCompatActivity {
         }
         if (Objects.nonNull(loginResult.getSuccess())) {
             showLogSuccessInfo(loginResult.getSuccess());
+            rememberLoginState();
             openHomeActivity();
         }
+    }
+
+    private void rememberLoginState() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.username), usernameView.getText().toString());
+        editor.putString(getString(R.string.password), passwordView.getText().toString());
+        editor.putString(getString(R.string.is_auto_login), "true");
+        editor.apply();
+
     }
 
     private void showLogSuccessInfo(LoggedInUserView loggedInUser) {
