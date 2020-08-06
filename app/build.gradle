@@ -36,6 +36,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:rules:1.2.0'
     androidTestImplementation 'org.mockito:mockito-android:3.4.4'
     testImplementation 'org.mockito:mockito-core:3.4.4'
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+
 
 
     //noinspection GradleCompatible
