@@ -28,7 +28,7 @@ public class TaskRepositoryTest {
     private TaskRepository taskRepository;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         appDatabase = Room.inMemoryDatabaseBuilder(
                 InstrumentationRegistry.getInstrumentation().getTargetContext(),
                 AppDatabase.class).build();
@@ -40,7 +40,7 @@ public class TaskRepositoryTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         appDatabase.close();
     }
 
